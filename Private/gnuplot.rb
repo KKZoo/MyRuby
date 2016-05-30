@@ -6,9 +6,10 @@
    ※これは一般化していないので使う際には注意が必要!!
 =end
 
-jikken=`ruby ave.rb`
+#テキストデータからデータを入力
 open("plot_ave.txt","a"){|f| f.write jikken}
 
+#gnuplotにデータを投げている
 f=open "| gnuplot - -","w"
 f.print <<Gp
 set term pdf
