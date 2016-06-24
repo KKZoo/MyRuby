@@ -1,6 +1,11 @@
 #!/usr/bin/ruby
 # coding: utf-8
 
+=begin
+  MySQLにて入力するデータの作成
+  usage => ruby DB_data.rb >> ~~.txt
+=end
+
 #データを出力する処理
 def data
 #希望している出力データを配列に格納
