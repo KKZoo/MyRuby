@@ -26,7 +26,7 @@ i = rand(0..2)
 
 #入力処理
     puts "✊　＝0  , ✌️　＝1  ,✋　＝2　を入力ください"
-    tes = STDIN.gets.chomp
+    tes = STDIN.gets.chomp.to_i
     tes = tes[0]
 
 #CPU入力の分岐処理
