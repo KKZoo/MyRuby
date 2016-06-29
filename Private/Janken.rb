@@ -2,9 +2,11 @@
 
 =begin
      じゃんけんプログラム！
+       ・「あいこでしょ」の処理を追加する
+       ・「errorじゃ」を 負け or あいこ の処理にする？(勝率計算が安定化するかも)
+       ・UIをもっと見やすくする(考え中)
+            ・出力結果をクリアして新しいじゃんけんに入る　とか
 =end
-
-require 'scanf'
 
 class Janken
 
@@ -24,7 +26,7 @@ i = rand(0..2)
 
 #入力処理
     puts "✊　＝0  , ✌️　＝1  ,✋　＝2　を入力ください"
-    tes = scanf("%d")
+    tes = STDIN.gets.chomp
     tes = tes[0]
 
 #CPU入力の分岐処理
