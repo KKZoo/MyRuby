@@ -2,11 +2,14 @@
 
 =begin
      じゃんけんプログラム！
-       ・「あいこでしょ」の処理を追加する
-       ・「errorじゃ」を 負け or あいこ の処理にする？(勝率計算が安定化するかも)
+       ・「あいこでしょ」の処理を追加する <= 終了
+       ・「errorじゃ」を 負け or あいこ の処理にする？ <= (もう少し改良が必要)
+       ・勝率計算を修正する
        ・UIをもっと見やすくする(考え中)
             ・出力結果をクリアして新しいじゃんけんに入る　とか
 =end
+
+require 'scanf'
 
 class Janken
 
@@ -22,69 +25,84 @@ create
    for e in 1..ARGV[0].to_i
 
 tes=[]
-i = rand(0..2)
 
 #入力処理
-    puts "✊　＝0  , ✌️　＝1  ,✋　＝2　を入力ください"
-    tes = STDIN.gets.chomp.to_i
+    puts "✊　＝0  , ✌️　＝1  ,✋　＝2　を入力してください"
+    tes = scanf("%d")#STDIN.gets.chomp.to_i
     tes = tes[0]
 
 #CPU入力の分岐処理
+loop do
+    i = rand(0..2)
     if i == 0 then   #CPU=✊の場合の処理
-       gu
+       rock
        case tes
            when 0 then
-                puts "あいこだよ!!"
-                `echo "0">>./memory.txt`
+                puts "あいこで"
+                tes = scanf("%d")
+                tes = tes[0]
            when 1 then
                 puts "負けだよ!!"
                 `echo "-1">>./memory.txt`
+                break
            when 2 then
                 puts "勝ちだよ!!"
                 `echo "1">>./memory.txt`
+                break
            else
-                puts "error じゃ"
-                `echo "0">>./memory.txt`
-       end
+                puts "⚠️ ✊　＝0  , ✌️　＝1  ,✋　＝2　を入力してください"
+                tes = scanf("%d")
+                tes = tes[0]
+       end #end if
 
     elsif i == 1 then   #CPU=✌️の場合の処理
-       tyoki
+       scissor
        case tes
            when 0 then
                 puts "勝ちだよ!!"
                 `echo "1">>./memory.txt`
+                break
            when 1 then
-                puts "あいこだよ!!"
-                `echo "0">>./memory.txt`
+                puts "あいこで"
+                tes = scanf("%d")
+                tes = tes[0]
            when 2 then
                 puts "負けだよ!!"
                 `echo "-1">>./memory.txt`
+                break
            else
-                puts "error じゃ"
-                `echo "0">>./memory.txt`
-       end
+                puts "⚠️ ✊　＝0  , ✌️　＝1  ,✋　＝2　を入力してください"
+                tes = scanf("%d")
+                tes = tes[0]
+       end #end if
 
     elsif i ==2 then     #CPU=✋の場合の処理
-       pa
+       paper
        case tes
            when 0 then
                 puts "負けだよ!!"
                 `echo "-1">>./memory.txt`
+                break
            when 1 then
                 puts "勝ちだよ!!"
                 `echo "1">>./memory.txt`
+                break
            when 2 then
-                puts "あいこだよ!!"
-                `echo "0">>./memory.txt`
+                puts "あいこで"
+                tes = scanf("%d")
+                tes = tes[0]
            else
-                puts "error じゃ"
-                `echo "0">>./memory.txt`
+                puts "⚠️ ✊　＝0  , ✌️　＝1  ,✋　＝2　を入力してください"
+                tes = scanf("%d")
+                tes = tes[0]
        end
     else
        puts "error"
     end
 
-   end
+end #end loop
+
+end #end def Janken_Main
 
 #結果を通知
 result
@@ -94,7 +112,7 @@ puts "\n"
 
 end  #def main 終了
 
-   def gu
+   def rock
 #グー
        puts "CPUはグー！"
        puts "　　　　　 ＿_"
@@ -107,7 +125,7 @@ end  #def main 終了
    end
 
 #チョキ
-   def tyoki
+   def scissor
        puts "CPUはチョキ！"
        puts "　　　　　(Ｖ)"
        puts "　　　　　/ｱE)"
@@ -118,7 +136,7 @@ end  #def main 終了
    end
 
 #パー
-   def pa
+   def paper
       puts "CPUはパー！"
       puts "　　　　　｢｢｢h"
       puts "　　　　 Ｃ　ﾉ"
@@ -144,7 +162,7 @@ end  #def main 終了
 # resultを計算
    def  result
     data1=[] , k = 0
-    tmp_win = [] ,tmp_draw = [] , tmp_lose = []
+    tmp_win = []  , tmp_lose = []
 
     file = open("./memory.txt")
         data = file.readlines #1行ずつデータを取り出す処理
@@ -153,7 +171,6 @@ end  #def main 終了
            data.each do |line|
                 tmp_win << 0 if(data[k].to_i==1)
                 tmp_lose << 0 if(data[k].to_i==-1)
-                tmp_draw << 0 if(data[k].to_i==0)
                 k +=1
            end
 
