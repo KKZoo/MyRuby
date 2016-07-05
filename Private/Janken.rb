@@ -2,9 +2,7 @@
 
 =begin
      じゃんけんプログラム！
-       ・「あいこでしょ」の処理を追加する <= 終了
        ・「errorじゃ」を 負け or あいこ の処理にする？ <= (もう少し改良が必要)
-       ・勝率計算を修正する <= 終了
        ・UIをもっと見やすくする(考え中)
             ・出力結果をクリアして新しいじゃんけんに入る　とか
 =end
@@ -30,12 +28,18 @@ tes=[]
     puts "✊　＝0  , ✌️　＝1  ,✋　＝2　を入力してください"
     tes = scanf("%d")
     tes = tes[0]
+    num = 0 #入力外指定に使用する
 
 #CPU入力の分岐処理
 loop do
+
+#指定ボタン以外を2回押したら終了
+    p num += 1
+    break if(num > 2)
+
     i = rand(0..2)
     if i == 0 then   #CPU=✊の場合の処理
-       rock
+       rock if(tes == (0..2))
        case tes
            when 0 then
                 puts "あいこで"
@@ -56,7 +60,7 @@ loop do
        end #end if
 
     elsif i == 1 then   #CPU=✌️の場合の処理
-       scissor
+       scissor if(tes == (0..2))
        case tes
            when 0 then
                 puts "勝ちだよ!!"
@@ -77,7 +81,7 @@ loop do
        end #end if
 
     elsif i ==2 then     #CPU=✋の場合の処理
-       paper
+       paper if(tes == (0..2))
        case tes
            when 0 then
                 puts "負けだよ!!"
@@ -97,7 +101,10 @@ loop do
                 tes = tes[0]
        end
     else
-       puts "error"
+#例外処理
+       puts "errorです"
+       puts "申し訳ありません\n トラブルにより試合を終了いたします"
+       break
     end
 
 end #end loop
@@ -148,7 +155,8 @@ end  #def main 終了
 
 # memory.txtを作成
    def create
-      `touch ./memory.txt`
+     data = "./memory.txt"
+     File.open("./#{data}","w").close()
    end
 
 # memory.txtを削除
@@ -162,8 +170,8 @@ end  #def main 終了
 # resultを計算
    def  result
     k = 0
-    tmp_win = []
-    tmp_lose = []
+    tmp_win , tmp_lose = [] , []
+#    tmp_lose = []
 
     file = open("./memory.txt")
         data = file.readlines
