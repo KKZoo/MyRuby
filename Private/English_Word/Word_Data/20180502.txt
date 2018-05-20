@@ -1,0 +1,7 @@
+book 本
+read 読む
+write 書く
+comic マンガ
+test テスト
+have_a_nice_day いってらっしゃい
+mother お母さん

@@ -1,0 +1,3 @@
+data1_word1 data1_Jmean1
+data1_word2 data1_Jmean2
+data1_word3 data1_Jmean3

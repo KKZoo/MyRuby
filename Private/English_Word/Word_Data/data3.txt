@@ -1,0 +1,3 @@
+read 読む
+write 書く
+book 本
