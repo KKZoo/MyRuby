@@ -188,7 +188,6 @@ end  #def main 終了
            @result = tmp_win.count.to_f / ( tmp_win.count + tmp_lose.count).to_f
     file.close
    end
-.
 end
 
 #全体の実行
