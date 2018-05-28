@@ -11,11 +11,13 @@ ruby tweet.rb tweet_word
 
 となっている。
 
-<b>注意</b>
-
+---
+<font color=red><b>※注意</b></font>
 しかし、このプログラムは仕様上、TwitterのID認証を行うAPI KeyやAccess Tokenが必要となっている。
 そのため、githubにあげる段階でその部分は隠してある。
 つまり、API Key等を独自で取得し、このプログラムに書き加える必要がある状態のコードである。
+
+---
 
 参考サイト
 
