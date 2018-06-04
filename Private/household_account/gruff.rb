@@ -1,6 +1,6 @@
 require 'gnuplot'
 
-=begin #gnuplot is output graph
+#gnuplot is output graph
 
 Gnuplot.open do |gp|
   Gnuplot::Plot.new(gp) do |plot|
@@ -10,5 +10,3 @@ Gnuplot.open do |gp|
   end
   gets
 end
-
-=end
