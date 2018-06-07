@@ -2,6 +2,18 @@
     家計簿プログラム
 =end
 
+def main
+#calをtxt数分、繰り返す    
+    Dir.glob("./data/#{ARGV[0]}/*.txt").count.times do |month|
+            cal(ARGV[0],month)
+    end
+
+#最終出力
+    plot
+end
+
+### 各月ごとの支出を計算
+def cal(year,month)
 #データの読み込み
     j=1
     k=0
@@ -11,7 +23,7 @@
     tmp_three = Array.new
     tmp_four = Array.new
     
-    file = open("./data/2018/test.txt")
+    file = open("./data/#{year}/#{month}.txt")
         data = file.readlines
         (data.size).times do
            data[data.size - j] = data[data.size - j].split(" ")
@@ -50,7 +62,7 @@
 
 #必要経費の計算  
     n = 1
-    total_two = 0  
+    total_two = total_one
     (tmp_two.size).times do
         total_two += tmp_two[ tmp_two.size - n ]
         n += 1
@@ -58,7 +70,7 @@
 
 #浪費の計算    
     n = 1
-    total_three = 0
+    total_three = total_two
     (tmp_three.size).times do
         total_three += tmp_three[ tmp_three.size - n ]
         n += 1
@@ -66,32 +78,41 @@
     
 #特別経費の計算
     n = 1
-    total_four = 0
+    total_four = total_three
    (tmp_four.size).times do
         total_four += tmp_four[ tmp_four.size - n ]
         n += 1
    end
 
-#`echo "#{total_one}" >> ./data/output/text.txt`
-#`echo "#{total_two}" >> ./data/output/text.txt`
-#`echo "#{total_three}" >> ./data/output/text.txt`
-#`echo "#{total_four}" >> ./data/output/text.txt`
-#`echo "#{total_all}" >> ./data/output/text.txt`
+#外部ファイルにデータを出力
+#    `echo "#{total_all}" >> ./data/output/text.txt`
+    `echo "#{total_one}" >> ./data/output/text1.txt`
+    `echo "#{total_two}" >> ./data/output/text2.txt`
+    `echo "#{total_three}" >> ./data/output/text3.txt`
+    `echo "#{total_four}" >> ./data/output/text4.txt`
 
-#p [total_all, total_one, total_two, total_three, total_four]
- 
+end
+
+
+def plot
 #テキストデータからデータを入力
-open("./data/output/text.txt","a")#{|f| f.write jikken}
+    open("./data/output/text.txt","a")#{|f| f.write jikken}
 
 #gnuplotにデータを投げている
 f=open "| gnuplot - -","w"
 f.print <<Gp
 set term jpeg
-set xrange [3:8]
+set xrange [1:12]
 set xlabel "month"
 set ylabel "money"
 set output "kakebo.jpeg"
-plot "./data/output/text.txt" with lines title "all" , "./data/output/text1.txt" with lines title "1", "./data/output/text2.txt" with lines title "2" ,"./data/output/text3.txt" with lines title "3", "./data/output/text4.txt" with lines title "4"
+plot "./data/output/text1.txt" with lines title " Fixed", "./data/output/text2.txt" with lines title "Necessary" ,"./data/output/text3.txt" with lines title "Waste", "./data/output/text4.txt" with lines title "Special"
 Gp
 f.close
-    
+
+#画像データの出力
+    `open kakebo.jpeg`
+
+end
+
+main
