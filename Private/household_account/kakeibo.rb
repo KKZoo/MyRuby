@@ -3,6 +3,11 @@
 =end
 
 def main
+#過去データの削除
+    4.times do |a|
+        delete(a+1)
+    end
+
 #calをtxt数分、繰り返す    
     Dir.glob("./data/#{ARGV[0]}/*.txt").count.times do |month|
             cal(ARGV[0],month)
@@ -44,6 +49,7 @@ def cal(year,month)
 #p [tmp_all, tmp_one, tmp_two, tmp_three, tmp_four]
 
 #データの計算
+=begin
 #全体の計算    
     n = 1
     total_all = 0
@@ -51,6 +57,7 @@ def cal(year,month)
         total_all += tmp_all[ tmp_all.size - n ]
         n += 1
     end
+=end
 
 #固定費の計算
     n = 1
@@ -85,7 +92,6 @@ def cal(year,month)
    end
 
 #外部ファイルにデータを出力
-#    `echo "#{total_all}" >> ./data/output/text.txt`
     `echo "#{total_one}" >> ./data/output/text1.txt`
     `echo "#{total_two}" >> ./data/output/text2.txt`
     `echo "#{total_three}" >> ./data/output/text3.txt`
@@ -96,7 +102,7 @@ end
 
 def plot
 #テキストデータからデータを入力
-    open("./data/output/text.txt","a")#{|f| f.write jikken}
+#    open("./data/output/text.txt","a")#{|f| f.write jikken}
 
 #gnuplotにデータを投げている
 f=open "| gnuplot - -","w"
@@ -113,6 +119,14 @@ f.close
 #画像データの出力
     `open kakebo.jpeg`
 
+end
+
+# memory.txtを削除
+def delete(num)
+    data="./data/output/text#{num}.txt"
+    if File.file?(data) then
+        File.unlink data
+    end
 end
 
 main
