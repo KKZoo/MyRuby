@@ -4,9 +4,7 @@
 
 def main
 #過去データの削除
-    4.times do |a|
-        delete(a+1)
-    end
+    delete
 
 #calをtxt数分、繰り返す    
     Dir.glob("./data/#{ARGV[0]}/*.txt").count.times do |month|
@@ -69,7 +67,7 @@ def cal(year,month)
 
 #必要経費の計算  
     n = 1
-    total_two = total_one
+    total_two = 0
     (tmp_two.size).times do
         total_two += tmp_two[ tmp_two.size - n ]
         n += 1
@@ -77,7 +75,7 @@ def cal(year,month)
 
 #浪費の計算    
     n = 1
-    total_three = total_two
+    total_three = 0
     (tmp_three.size).times do
         total_three += tmp_three[ tmp_three.size - n ]
         n += 1
@@ -85,18 +83,20 @@ def cal(year,month)
     
 #特別経費の計算
     n = 1
-    total_four = total_three
+    total_four = 0
    (tmp_four.size).times do
         total_four += tmp_four[ tmp_four.size - n ]
         n += 1
    end
 
 #外部ファイルにデータを出力
+=begin
     `echo "#{total_one}" >> ./data/output/text1.txt`
     `echo "#{total_two}" >> ./data/output/text2.txt`
     `echo "#{total_three}" >> ./data/output/text3.txt`
     `echo "#{total_four}" >> ./data/output/text4.txt`
-
+=end
+    `echo "#{month} #{total_one} #{total_two} #{total_three} #{total_four}" >> ./data/output/Spending.txt`
 end
 
 
@@ -107,12 +107,14 @@ def plot
 #gnuplotにデータを投げている
 f=open "| gnuplot - -","w"
 f.print <<Gp
+set style fill solid border lc rgb "black"
+set boxwidth 0.5
 set term jpeg
 set xrange [1:12]
 set xlabel "month"
 set ylabel "money"
 set output "kakebo.jpeg"
-plot "./data/output/text1.txt" with lines title " Fixed", "./data/output/text2.txt" with lines title "Necessary" ,"./data/output/text3.txt" with lines title "Waste", "./data/output/text4.txt" with lines title "Special"
+plot "./data/output/Spending.txt" using 0:($2+$3+$4+$5) with boxes lw 2 lc rgb "pink" title "spacial", "./data/output/Spending.txt" using 0:($2+$3+$4) with boxes lw 2 lc rgb "green" title "waste", "./data/output/Spending.txt" using 0:($2+$3) with boxes lw 2 lc rgb "orange" title "nessesary", "./data/output/Spending.txt" using 0:($2):xtic(1) with boxes lw 2 lc rgb "light-cyan"  title "fixed"
 Gp
 f.close
 
@@ -121,9 +123,9 @@ f.close
 
 end
 
-# memory.txtを削除
-def delete(num)
-    data="./data/output/text#{num}.txt"
+# txtを削除
+def delete
+    data="./data/output/Spending.txt"
     if File.file?(data) then
         File.unlink data
     end
