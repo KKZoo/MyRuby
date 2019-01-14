@@ -1,4 +1,5 @@
-#     家計簿プログラム
+
+#  家計簿プログラム
 
 def main
   # 過去データの削除
@@ -23,6 +24,7 @@ def cal(year, month)
   tmp_two = []
   tmp_three = []
   tmp_four = []
+  total_result = []
 
   file = open("./data/#{year}/#{month}.txt")
     data = file.readlines
@@ -41,51 +43,20 @@ def cal(year, month)
       k += 1
     end
   file.close
+  tmp_summary = [tmp_all, tmp_one, tmp_two, tmp_three, tmp_four]
 
-  # データの計算
-  # #全体の計算
-  #     n = 1
-  #     total_all = 0
-  #     (tmp_all.size).times do
-  #         total_all += tmp_all[ tmp_all.size - n ]
-  #         n += 1
-  #     end
-
-  # 固定費の計算
-  n = 1
-  total_one = 0
-  tmp_one.size.times do
-    total_one += tmp_one[tmp_one.size - n]
-    n += 1
-  end
-
-  # 必要経費の計算
-  n = 1
-  total_two = 0
-  tmp_two.size.times do
-    total_two += tmp_two[tmp_two.size - n]
-    n += 1
-  end
-
-  # 浪費の計算
-  n = 1
-  total_three = 0
-  tmp_three.size.times do
-    total_three += tmp_three[tmp_three.size - n]
-    n += 1
-  end
-
-  # 特別経費の計算
-  n = 1
-  total_four = 0
-  tmp_four.size.times do
-    total_four += tmp_four[tmp_four.size - n]
-    n += 1
-  end
+# 計算部分  
+    (tmp_summary.size).times do |summary|
+      total = 0   
+      (tmp_summary[summary].size).times do |tmp|
+        total += tmp_summary[summary][tmp]
+      end
+      total_result << total
+    end
 
   # 外部ファイルにデータを出力
   File.open("./data/output/Spending.txt", "a") do |output_data|
-    output_data.puts("#{month} #{total_one} #{total_two} #{total_three} #{total_four}")
+    output_data.puts("#{month} #{total_result[1]} #{total_result[2]} #{total_result[3]} #{total_result[4]}")
   end
 end
 
